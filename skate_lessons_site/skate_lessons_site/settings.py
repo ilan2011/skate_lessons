@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'skate_lessons_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'skate_lessons_db',
-        'USER': 'skate_lessons_user',
+        'NAME': 'skate_site',
+        'USER': 'skate_site_user',
         'PASSWORD': 'ilan2011',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5433',
     }
 }
 
