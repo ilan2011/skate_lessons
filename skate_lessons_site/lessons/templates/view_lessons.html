@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>View Your Lessons!</h1>
-{% endblock %}
+<h2>Your Lessons</h2>
+<ul>
+{% for lesson in lessons %}
+  <li>{{ lesson.start_time }} - {{ lesson.end_time }} at {{ lesson.location }}</li>
+{% endfor %}
+</ul>
+{%endblock%}

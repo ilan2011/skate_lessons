@@ -19,6 +19,7 @@ from base import views as base_views
 from lessons import views as lessons_views
 from accounts import views as account_views
 from django.contrib.auth import views as auth_views
+from lessons import api_views
 
 
 urlpatterns = [
@@ -30,4 +31,5 @@ urlpatterns = [
     path('accounts/login/', account_views.login_view, name='login'),
     path('accounts/logout/', account_views.logout_view, name='logout'),
     path('accounts/signup/', account_views.signup_view, name='signup'),
+
 ]

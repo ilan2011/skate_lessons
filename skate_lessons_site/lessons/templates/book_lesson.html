@@ -1,4 +1,14 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>Book a Lesson! Us</h1>
+<h2>Book a Lesson</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if user_authenticated %}
+    <button type="submit">Book Lesson</button>
+  {% else %}
+    <p>You need to <a href="{% url 'login' %}">login</a> to book a lesson.</p>
+  {% endif %}
+</form>
 {% endblock %}
