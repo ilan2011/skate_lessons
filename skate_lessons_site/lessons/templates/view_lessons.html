@@ -4,7 +4,7 @@
 <h2>Your Lessons</h2>
 <ul>
 {% for lesson in lessons %}
-  <li>{{ lesson.start_time }} - {{ lesson.end_time }} at {{ lesson.location }}</li>
+  <li>{{lesson.date}}, {{ lesson.start_time }} - {{ lesson.end_time }} at {{ lesson.location }}</li>
 {% endfor %}
 </ul>
 {%endblock%}

@@ -4,11 +4,94 @@
 <h2>Book a Lesson</h2>
 <form method="post">
   {% csrf_token %}
-  {{ form.as_p }}
+  <div class="form-group">
+    {{ form.date.label_tag }} {{ form.date }}
+  </div>
+  <div class="form-group">
+    {{ form.start_time.label_tag }} {{ form.start_time }}
+  </div>
+  <div class="form-group">
+    {{ form.end_time.label_tag }} {{ form.end_time }}
+  </div>
+  <div class="form-group">
+    {{ form.location.label_tag }} {{ form.location }}
+  </div>
+  {% if form.errors %}
+    <div class="alert alert-danger">
+      {% for field in form %}
+        {% for error in field.errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  {% endif %}
   {% if user_authenticated %}
-    <button type="submit">Book Lesson</button>
+    <button type="submit" class="btn btn-primary">Book Lesson</button>
   {% else %}
     <p>You need to <a href="{% url 'login' %}">login</a> to book a lesson.</p>
   {% endif %}
 </form>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const dateField = document.getElementById("id_date");
+    const startTimeField = document.getElementById("id_start_time");
+    const endTimeField = document.getElementById("id_end_time");
+    let endTimeOptions = null;
+
+    startTimeField.disabled = true;
+    endTimeField.disabled = true;
+
+    function disableEndTime() {
+      for (let i = 0; i < endTimeOptions.length; i++) {
+        endTimeOptions[i].disabled = true;
+      }
+    }
+
+    function updateEndTimeOptions() {
+      const selectedStartTime = new Date(`1970-01-01T${startTimeField.value}`);
+      for (let i = 0; i < endTimeOptions.length; i++) {
+        const endTime = new Date(`1970-01-01T${endTimeOptions[i].value}`);
+        const timeDifference = (endTime.getTime() - selectedStartTime.getTime()) / 60000; // Get time difference in minutes
+        if (endTime <= selectedStartTime || timeDifference <= 30) {
+          endTimeOptions[i].disabled = true;
+        } else {
+          endTimeOptions[i].disabled = false;
+        }
+      }
+    }
+
+    function updateDisabledStatus() {
+      const hasDate = dateField.value !== "";
+      const hasStartTime = startTimeField.value !== "" && startTimeField.value !== "00:00"; // check for non-default start time
+
+      startTimeField.disabled = !hasDate;
+      endTimeField.disabled = !hasStartTime;
+
+      if (hasDate) {
+        disableEndTime();
+      }
+      if (hasStartTime) {
+        endTimeField.disabled = false;
+        const startHour = parseInt(startTimeField.value.substr(0, 2));
+        const startMinute = parseInt(startTimeField.value.substr(3, 2));
+        const endHour = startHour + 1;
+        const endMinute = startMinute;
+        const newEndTime = (endHour < 10 ? "0" + endHour : endHour) + ":" + (endMinute < 10 ? "0" + endMinute : endMinute);
+        endTimeField.value = newEndTime;
+        updateEndTimeOptions();
+      }
+      if (!hasStartTime) {
+        disableEndTime();
+      }
+    }
+
+    dateField.addEventListener("change", updateDisabledStatus);
+    startTimeField.addEventListener("change", updateDisabledStatus);
+    endTimeField.addEventListener("change", updateEndTimeOptions);
+    endTimeOptions = endTimeField.querySelectorAll('option');
+    updateDisabledStatus(); // Add an extra call to updateDisabledStatus here
+    
+  });
+</script>
 {% endblock %}
