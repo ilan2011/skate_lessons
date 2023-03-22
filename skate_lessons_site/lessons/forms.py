@@ -21,7 +21,6 @@ class LessonForm(forms.ModelForm):
 
     tomorrow = date.today() + timedelta(days=1)
     date = forms.DateField(
-        initial=tomorrow.strftime('%Y-%m-%d'),
         input_formats=['%Y-%m-%d'],
         widget=forms.DateInput(
             attrs={'type': 'date', 'id': 'id_date', 'min': tomorrow.strftime('%Y-%m-%d')})
