@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Your Lessons</h2>
-<ul>
-{% for lesson in lessons %}
-  <li>{{lesson.date}}, {{ lesson.start_time }} - {{ lesson.end_time }} at {{ lesson.location }}</li>
-{% endfor %}
-</ul>
-{%endblock%}
+  <h2>Your Lessons</h2>
+  <ul class="list-group list-group-flush">
+    {% for lesson in lessons %}
+      <li class="list-group-item">
+        {{ lesson.date }}, {{ lesson.start_time }} - {{ lesson.end_time }} at {{ lesson.location }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
